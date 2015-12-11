@@ -1,0 +1,13 @@
+fuel-plugin-etckeeper:
+  # Role name
+  name: "etckeeper"
+  # Role description
+  description: "This plugin installs and configured etckeeper to track configuration changes on nodes via git"
+  # If primaty then during orchestration this role will be
+  # splitted into primary-role and role
+  has_primary: false
+  # Assign public IP to node if true
+  public_ip_required: false
+  # Weight that will be used to sort out the
+  # roles on the Fuel web UI
+  weight: 1000
