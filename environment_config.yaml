@@ -1,7 +1,14 @@
 attributes:
-  fuel-plugin-etckeeper_text:
-    value: 'Set default value'
-    label: 'Text field'
-    description: 'Description for text field'
+  vcs:
+    label: "Version Control System"
+    description: "VCS system to use to track changes"
     weight: 25
-    type: "text"
+    type: "radio"
+    value: "git"
+    values:
+      - data: "git"
+        label: "Git"
+      - data: "bzr"
+        label: "Bazaar"
+      - data: "hg"
+        label: "Mercurial"

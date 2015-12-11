@@ -30,3 +30,11 @@
     puppet_modules: "/etc/puppet/modules"
     timeout: 3600
 
+- id: fuel-plugin-etckeeper-commit
+  type: shell
+  role: [fuel-plugin-etckeeper]
+  required_for: [post_deployment_end]
+  requires: [fuel-plugin-etckeeper-installation,fuel-plugin-etckeeper-configuration]
+  parameters:
+    cmd: bash commit_etckeeper.sh
+    timeout: 300

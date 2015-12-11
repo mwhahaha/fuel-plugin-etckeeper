@@ -1,18 +1,31 @@
 notice('MODULAR: fuel-plugin-etckeeper/install_etckeeper.pp')
 
-$package_list = ['etckeeper', 'git']
+$etckeeper_hash = hiera_hash('fuel-plugin-etckeeper', {})
+$etckeeper_scm = pick($etckeeper_hash['vcs'], 'git')
+
+$etckeeper_scm_package = $etckeeper_scm ? {
+  /git/: { 'git' },
+  /hg/: { 'mercurial' },
+  /bzr/: { 'bazaar' },
+  default: {
+    fail("Unsupported SCM '${etckeeper_scm}'")
+  }
+}
+
+$package_list = ['etckeeper', $etckeeper_scm_package]
 
 ensure_packages($package_list)
 
-# the installation of etckeeper includes an initial initialization using bzr
-# so we want to uninit etckeeper if the package changes and it is configured
-# to use bzr. This plugin will configure it to use git afterwards so this should
-# only run after the initial installation.
-exec { 'etckeeper-uninit':
-  refreshonly => true,
-  path        => '/bin:/usr/bin:/usr/local/bin',
-  command     => '/usr/bin/etckeeper uninit -f',
-  onlyif      => 'grep -q \'^VCS="bzr"\' /etc/etckeeper/etckeeper.conf',
+if $::operatingsystem == 'Ubuntu' and $etckeeper_scm != 'bzr' {
+  # the installation of etckeeper includes an initial initialization using bzr
+  # so we want to uninit etckeeper if the package changes and it is configured
+  # to not use bzr.
+  exec { 'etckeeper-uninit':
+    refreshonly => true,
+    path        => '/bin:/usr/bin:/usr/local/bin',
+    command     => '/usr/bin/etckeeper uninit -f',
+    onlyif      => 'grep -q \'^VCS="bzr"\' /etc/etckeeper/etckeeper.conf',
+  }
+  Package['etckeeper'] ~> Exec['etckeeper-uninit']
 }
 
-Package['etckeeper'] ~> Exec['etckeeper-uninit']
