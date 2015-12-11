@@ -14,7 +14,7 @@
 - id: fuel-plugin-etckeeper-installation
   type: puppet
   required_for: [post_deployment_end]
-  requires: [post_deployment_start]
+  requires: [post_deployment_start,update_hosts]
   parameters:
     puppet_manifest: "install_etckeeper.pp"
     puppet_modules: "/etc/puppet/modules"
