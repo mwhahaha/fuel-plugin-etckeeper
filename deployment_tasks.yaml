@@ -6,7 +6,7 @@
   role: [fuel-plugin-etckeeper]
   tasks: [fuel_pkgs, hiera, globals, tools, logging, netconfig, hosts,
     firewall, deploy_start, fuel-plugin-etckeeper-installation,
-    fuel-plugin-etckeeper-configuration]
+    fuel-plugin-etckeeper-configuration, fuel-plugin-etckeeper-commit]
   parameters:
     strategy:
       type: parallel
@@ -14,7 +14,8 @@
 - id: fuel-plugin-etckeeper-installation
   type: puppet
   required_for: [post_deployment_end]
-  requires: [post_deployment_start,update_hosts]
+  requires: [post_deployment_start, update_hosts, ntp-client, ntp-server,
+      disable_keystone_service_token]
   parameters:
     puppet_manifest: "install_etckeeper.pp"
     puppet_modules: "/etc/puppet/modules"
@@ -31,10 +32,11 @@
     timeout: 3600
 
 - id: fuel-plugin-etckeeper-commit
-  type: shell
+  type: puppet
   role: [fuel-plugin-etckeeper]
   required_for: [post_deployment_end]
-  requires: [fuel-plugin-etckeeper-installation,fuel-plugin-etckeeper-configuration]
+  requires: [fuel-plugin-etckeeper-installation, fuel-plugin-etckeeper-configuration]
   parameters:
-    cmd: bash commit_etckeeper.sh
+    puppet_manifest: "commit_etckeeper.pp"
+    puppet_modules: "/etc/puppet/modules"
     timeout: 300
