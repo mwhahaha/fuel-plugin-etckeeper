@@ -7,22 +7,16 @@ Augeas {
 
 $etckeeper_hash = hiera_hash('fuel-plugin-etckeeper', {})
 $etckeeper_scm = pick($etckeeper_hash['vcs'], 'git')
-
-$etckeeper_scm_dir = $etckeeper_scm ? {
-  /git/: { '/etc/.git' },
-  /hg/: { '/etc/.hg' },
-  /bzr/: { '/etc/.bzr' },
-  default: {
-    fail("Unsupported SCM '${etckeeper_scm}'")
-  }
+if !($etckeeper_scm in ['git', 'hg', 'bzr']) {
+  fail("Unsupported SCM '${etckeeper_scm}'")
 }
+$etckeeper_scm_dir = "/etc/.${etckeeper_scm}"
 
 augeas { 'etckeeper-vcs':
   changes => [
     "set VCS '\"${etckeeper_scm}\"'"
   ]
 }
-
 
 # if the .git folder does not exist then run the etckeeper git process
 exec { 'etckeeper-init':
