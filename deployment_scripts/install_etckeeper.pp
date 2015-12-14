@@ -2,14 +2,13 @@ notice('MODULAR: fuel-plugin-etckeeper/install_etckeeper.pp')
 
 $etckeeper_hash = hiera_hash('fuel-plugin-etckeeper', {})
 $etckeeper_scm = pick($etckeeper_hash['vcs'], 'git')
-
+if !($etckeeper_scm in ['git', 'hg', 'bzr']) {
+  fail("Unsupported SCM '${etckeeper_scm}'")
+}
 $etckeeper_scm_package = $etckeeper_scm ? {
-  /git/: { 'git' },
-  /hg/: { 'mercurial' },
-  /bzr/: { 'bazaar' },
-  default: {
-    fail("Unsupported SCM '${etckeeper_scm}'")
-  }
+  /git/ => 'git',
+  /hg/  => 'mercurial',
+  /bzr/ => 'bazaar',
 }
 
 $package_list = ['etckeeper', $etckeeper_scm_package]
