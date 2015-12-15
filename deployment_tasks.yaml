@@ -4,9 +4,8 @@
 - id: fuel-plugin-etckeeper
   type: group
   role: [fuel-plugin-etckeeper]
-  tasks: [fuel_pkgs, hiera, globals, tools, logging, netconfig, hosts,
-    firewall, deploy_start, fuel-plugin-etckeeper-installation,
-    fuel-plugin-etckeeper-configuration, fuel-plugin-etckeeper-commit]
+  tasks: [fuel-plugin-etckeeper-installation,
+          fuel-plugin-etckeeper-configuration, fuel-plugin-etckeeper-commit]
   parameters:
     strategy:
       type: parallel
@@ -15,7 +14,7 @@
   type: puppet
   required_for: [post_deployment_end]
   requires: [post_deployment_start, update_hosts, ntp-client, ntp-server,
-      disable_keystone_service_token]
+             disable_keystone_service_token]
   parameters:
     puppet_manifest: "install_etckeeper.pp"
     puppet_modules: "/etc/puppet/modules"
