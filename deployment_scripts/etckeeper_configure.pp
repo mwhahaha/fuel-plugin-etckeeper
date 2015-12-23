@@ -1,4 +1,4 @@
-notice('MODULAR: fuel-plugin-etckeeper/configure_etckeeper.pp')
+notice('MODULAR: fuel-plugin-etckeeper/etckeeper_configure.pp')
 
 Augeas {
   lens => 'Shellvars.lns',

@@ -1,4 +1,4 @@
-notice('MODULAR: fuel-plugin-etckeeper/install_etckeeper.pp')
+notice('MODULAR: fuel-plugin-etckeeper/etckeeper_install.pp')
 
 $etckeeper_hash = hiera_hash('fuel-plugin-etckeeper', {})
 $etckeeper_scm = pick($etckeeper_hash['vcs'], 'git')

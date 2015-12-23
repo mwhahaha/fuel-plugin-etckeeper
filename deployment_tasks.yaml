@@ -16,7 +16,7 @@
   requires: [post_deployment_start, update_hosts, ntp-client, ntp-server,
              disable_keystone_service_token]
   parameters:
-    puppet_manifest: "install_etckeeper.pp"
+    puppet_manifest: "etckeeper_install.pp"
     puppet_modules: "/etc/puppet/modules"
     timeout: 600
 
@@ -26,7 +26,7 @@
   required_for: [post_deployment_end]
   requires: [fuel-plugin-etckeeper-installation]
   parameters:
-    puppet_manifest: "configure_etckeeper.pp"
+    puppet_manifest: "etckeeper_configure.pp"
     puppet_modules: "/etc/puppet/modules"
     timeout: 3600
 
@@ -36,6 +36,6 @@
   required_for: [post_deployment_end]
   requires: [fuel-plugin-etckeeper-installation, fuel-plugin-etckeeper-configuration]
   parameters:
-    puppet_manifest: "commit_etckeeper.pp"
+    puppet_manifest: "etckeeper_commit.pp"
     puppet_modules: "/etc/puppet/modules"
     timeout: 300

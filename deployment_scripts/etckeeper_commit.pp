@@ -1,4 +1,4 @@
-notice('MODULAR: fuel-plugin-etckeeper/commit_etckeeper.pp')
+notice('MODULAR: fuel-plugin-etckeeper/etckeeper_commit.pp')
 
 exec { 'etckeeper-commit':
   path    => '/bin:/usr/bin:/usr/local/bin',
