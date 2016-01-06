@@ -1,0 +1,26 @@
+- id: fuel-plugin-etckeeper-install
+  type: puppet
+  role: '*'
+  stage: post_deployment/8997
+  parameters:
+    puppet_manifest: "etckeeper_install.pp"
+    puppet_modules: "/etc/puppet/modules"
+    timeout: 600
+
+- id: fuel-plugin-etckeeper-configure
+  type: puppet
+  role: '*'
+  stage: post_deployment/8998
+  parameters:
+    puppet_manifest: "etckeeper_configure.pp"
+    puppet_modules: "/etc/puppet/modules"
+    timeout: 3600
+
+- id: fuel-plugin-etckeeper-commit
+  type: puppet
+  role: '*'
+  stage: post_deployment/8999
+  parameters:
+    puppet_manifest: "etckeeper_commit.pp"
+    puppet_modules: "/etc/puppet/modules"
+    timeout: 3600
